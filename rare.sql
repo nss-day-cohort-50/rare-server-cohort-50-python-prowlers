@@ -86,4 +86,10 @@ CREATE TABLE "Categories" (
 
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
-INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy')INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Title', 1, 'image', 'content', null);
+INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy')
+
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Title', 1, 'image', 'content', null);
+INSERT INTO Users VALUES (null, "Ricky", "Spanish", 'ricky@spanish.com', "Here's my bio", "ricky", "password", "null", "20211025", 0)
+
+SELECT *
+FROM Users
