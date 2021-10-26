@@ -3,7 +3,6 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_all_users, create_user, login_user
 
 
-
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
 # work together for a common purpose. In this case, that
@@ -85,8 +84,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "users":
                 response = get_all_users()
 
-
-
         elif len(parsed) == 3:
             (resource, key, value) = parsed
 
@@ -100,6 +97,8 @@ class HandleRequests(BaseHTTPRequestHandler):
     # It handles any POST request.
 
     def do_POST(self):
+        """Handles POST requests to the server
+        """
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
