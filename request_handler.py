@@ -1,5 +1,8 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from users import get_single_user, get_all_users, create_user, delete_user
+from posts import get_single_post, get_all_posts, delete_post, create_post
+from comments import get_all_comments, get_single_comment
 from users import get_all_users, create_user, login_user
 
 
@@ -65,9 +68,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     # Here's a method on the class that overrides the parent's method.
@@ -82,7 +85,20 @@ class HandleRequests(BaseHTTPRequestHandler):
             (resource, id) = self.parse_url(self.path)
 
             if resource == "users":
-                response = get_all_users()
+                if id is not None:
+                    response = f"{get_single_user(id)}"
+                else:
+                    response = f"{get_all_users()}"
+            elif resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
+            elif resource == "comments":
+                if id is not None:
+                    response = f"{get_single_comment(id)}"
+                else:
+                    response = f"{get_all_comments()}"
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed
@@ -119,6 +135,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_item = create_user(post_body)
         elif resource == "login":
             new_item = login_user(post_body)
+
+        elif resource == "posts":
+            new_item = create_post(post_body)
 
         self.wfile.write(f"{new_item}".encode())
         # Encode the new animal and send in response
@@ -157,6 +176,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         # EXAMPLE BELOW
         # if resource == "animals":
         #     delete_animal(id)
+        if resource == "users":
+            delete_user(id)
+
+        elif resource == "posts":
+            delete_post(id)
 
         # Encode the new animal and send in response
         self.wfile.write("".encode())

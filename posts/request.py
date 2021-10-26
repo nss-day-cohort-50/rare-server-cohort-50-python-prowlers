@@ -1,6 +1,6 @@
 import sqlite3
 import json
-
+from models import Post
 
 def get_all_posts():
     """fetches all posts"""
@@ -52,6 +52,7 @@ def get_single_post(id):
             p.content,
             p.approved
         FROM posts p
+        WHERE p.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
