@@ -3,6 +3,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_single_user, get_all_users, create_user, delete_user
 from posts import get_single_post, get_all_posts, delete_post, create_post
 from comments import get_all_comments, get_single_comment
+from users import get_all_users, create_user, login_user
+
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -66,9 +68,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     # Here's a method on the class that overrides the parent's method.
@@ -105,12 +107,14 @@ class HandleRequests(BaseHTTPRequestHandler):
             # query parameter that specified the customer
             # email as a filtering value?
 
-        self.wfile.write(response.encode())
+        self.wfile.write(f"{response}".encode())
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
 
     def do_POST(self):
+        """Handles POST requests to the server
+        """
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
@@ -122,22 +126,20 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Initialize new animal
-        new_user = None
-        new_post = None
+        new_item = None
         # Add a new animal to the list. Don't worry about
         # the orange squiggle, you'll define the create_animal
         # function next.
         # EXAMPLE BELOW
-        # if resource == "animals":
-        #     new_item = create_animal(post_body)
-        if resource == "users":
-            new_user = create_user(post_body)
-            self.wfile.write(f"{new_user}".encode())
+        if resource == "register":
+            new_item = create_user(post_body)
+        elif resource == "login":
+            new_item = login_user(post_body)
 
         elif resource == "posts":
-            new_post = create_post(post_body)
-            self.wfile.write(f"{new_post}".encode())
+            new_item = create_post(post_body)
 
+        self.wfile.write(f"{new_item}".encode())
         # Encode the new animal and send in response
 
     # Here's a method on the class that overrides the parent's method.
