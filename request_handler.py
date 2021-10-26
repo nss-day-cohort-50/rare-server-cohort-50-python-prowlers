@@ -1,6 +1,7 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from users import get_single_user, get_all_users, create_user
+from users import get_all_users, create_user, login_user
+
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -81,10 +82,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             (resource, id) = self.parse_url(self.path)
 
             if resource == "users":
-                if id is not None:
-                    response = f"{get_single_user(id)}"
-                else:
-                    response = f"{get_all_users()}"
+                response = get_all_users()
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed
@@ -93,7 +91,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             # query parameter that specified the customer
             # email as a filtering value?
 
-        self.wfile.write(response.encode())
+        self.wfile.write(f"{response}".encode())
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
@@ -112,13 +110,17 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Initialize new animal
-        new_dict = None
-
+        new_item = None
+        # Add a new animal to the list. Don't worry about
+        # the orange squiggle, you'll define the create_animal
+        # function next.
+        # EXAMPLE BELOW
         if resource == "register":
-            new_dict = create_user(post_body)
+            new_item = create_user(post_body)
+        elif resource == "login":
+            new_item = login_user(post_body)
 
-        self.wfile.write(f"{new_dict}".encode())
-
+        self.wfile.write(f"{new_item}".encode())
         # Encode the new animal and send in response
 
     # Here's a method on the class that overrides the parent's method.
