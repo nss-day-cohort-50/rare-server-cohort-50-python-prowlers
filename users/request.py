@@ -73,6 +73,7 @@ def get_single_user(id):
             u.created_on,
             u.active
         FROM Users u
+        WHERE u.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
@@ -82,3 +83,13 @@ def get_single_user(id):
                         data['profile_image_url'], data['created_on'], data['active'])
 
         return json.dumps(user.__dict__)
+
+def delete_user(id):
+    """deletes a single user"""
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Users
+        WHERE id = ?
+        """, ( id, ))

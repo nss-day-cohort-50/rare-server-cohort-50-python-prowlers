@@ -91,4 +91,15 @@ INSERT INTO Users VALUES (1, "Ricky", "Spanish", 'ricky@spanish.com', "Here's my
 INSERT INTO Users VALUES (2, "Isla", "Fischer", 'Isla@fischer.com', "Here's my bio", "isla", "isla", "null", "20211025", 0);
 
 SELECT *
-FROM Users
+FROM Comments
+
+INSERT INTO Posts VALUES (null, 1, 1, "alien 2", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
+
+INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.");
+INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.", 10/24/2021);
+INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.", 10242021);
+
+
+
+ALTER TABLE Comments 
+ADD COLUMN created_on DATE;

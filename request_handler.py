@@ -1,6 +1,8 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from users import get_single_user, get_all_users, create_user
+from users import get_single_user, get_all_users, create_user, delete_user
+from posts import get_single_post, get_all_posts, delete_post, create_post
+from comments import get_all_comments, get_single_comment
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -85,6 +87,16 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}"
+            elif resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
+            elif resource == "comments":
+                if id is not None:
+                    response = f"{get_single_comment(id)}"
+                else:
+                    response = f"{get_all_comments()}"
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed
@@ -111,6 +123,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # Initialize new animal
         new_user = None
+        new_post = None
         # Add a new animal to the list. Don't worry about
         # the orange squiggle, you'll define the create_animal
         # function next.
@@ -120,6 +133,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "users":
             new_user = create_user(post_body)
             self.wfile.write(f"{new_user}".encode())
+
+        elif resource == "posts":
+            new_post = create_post(post_body)
+            self.wfile.write(f"{new_post}".encode())
 
         # Encode the new animal and send in response
 
@@ -157,6 +174,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         # EXAMPLE BELOW
         # if resource == "animals":
         #     delete_animal(id)
+        if resource == "users":
+            delete_user(id)
+
+        elif resource == "posts":
+            delete_post(id)
 
         # Encode the new animal and send in response
         self.wfile.write("".encode())
