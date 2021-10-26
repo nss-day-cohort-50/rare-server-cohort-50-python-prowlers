@@ -18,8 +18,11 @@ def get_all_comments():
             c.content,
             c.created_on
         FROM Comments c
+        JOIN Posts p
+            ON p.id = c.post_id
+        JOIN Users u
+            ON u.id = c.author_id
         """)
-
 
         comments = []
         dataset = db_cursor.fetchall()
@@ -27,7 +30,7 @@ def get_all_comments():
         for row in dataset:
 
             comment = Comment(row['id'], row['post_id'],
-                        row['author_id'], row['content'], row['created_on'])
+                              row['author_id'], row['content'], row['created_on'])
 
             post = Post(row['id'], row['user_id'],
                         row['category_id'], row['title'],
@@ -42,6 +45,7 @@ def get_all_comments():
             comments.append(comment.__dict__)
 
         return json.dumps(comments)
+
 
 def get_single_comment(id):
     """fetches individual comment"""
@@ -58,11 +62,11 @@ def get_single_comment(id):
             c.created_on
         FROM Comments c
         WHERE c.id = ?
-        """, ( id, ))
+        """, (id, ))
 
         data = db_cursor.fetchone()
 
         comment = Comment(data['id'], data['post_id'],
-                        data['author_id'], data['content'], data['created_on'])
+                          data['author_id'], data['content'], data['created_on'])
 
         return json.dumps(comment.__dict__)

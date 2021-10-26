@@ -1,7 +1,8 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from posts.request import get_current_user_posts
 from users import get_single_user, get_all_users, create_user, delete_user
-from posts import get_single_post, get_all_posts, delete_post, create_post
+from posts import get_single_post, get_all_posts, delete_post, create_post, get_current_user_posts
 from comments import get_all_comments, get_single_comment
 from users import get_all_users, create_user, login_user
 
@@ -68,9 +69,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     # Here's a method on the class that overrides the parent's method.
@@ -102,6 +103,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed
+
+            if key == 'user_id' and resource == 'posts':
+                response = get_current_user_posts(value)
 
             # Is the resource `customers` and was there a
             # query parameter that specified the customer

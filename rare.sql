@@ -46,6 +46,7 @@ CREATE TABLE "Comments" (
   "post_id" INTEGER,
   "author_id" INTEGER,
   "content" varchar,
+  "created_on" date,
   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
 );
@@ -93,7 +94,8 @@ INSERT INTO Users VALUES (2, "Isla", "Fischer", 'Isla@fischer.com', "Here's my b
 SELECT *
 FROM Comments
 
-INSERT INTO Posts VALUES (null, 1, 1, "alien 2", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
+INSERT INTO Posts VALUES (null, 2, 1, "alien 21", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
+INSERT INTO Posts VALUES (null, 2, 2, "alien 2", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
 
 INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.");
 INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.", 10/24/2021);
@@ -103,3 +105,9 @@ INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hot
 
 ALTER TABLE Comments 
 ADD COLUMN created_on DATE;
+
+SELECT *
+FROM Users;
+
+SELECT *
+FROM Posts
