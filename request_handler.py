@@ -99,6 +99,8 @@ class HandleRequests(BaseHTTPRequestHandler):
     # It handles any POST request.
 
     def do_POST(self):
+        """Handles POST requests to the server
+        """
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
@@ -110,16 +112,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Initialize new animal
-        new_user = None
-        # Add a new animal to the list. Don't worry about
-        # the orange squiggle, you'll define the create_animal
-        # function next.
-        # EXAMPLE BELOW
-        # if resource == "animals":
-        #     new_item = create_animal(post_body)
-        if resource == "users":
-            new_user = create_user(post_body)
-            self.wfile.write(f"{new_user}".encode())
+        new_dict = None
+
+        if resource == "register":
+            new_dict = create_user(post_body)
+
+        self.wfile.write(f"{new_dict}".encode())
 
         # Encode the new animal and send in response
 
