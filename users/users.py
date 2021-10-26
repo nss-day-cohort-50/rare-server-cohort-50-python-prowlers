@@ -82,3 +82,21 @@ def get_single_user(id):
                         data['profile_image_url'], data['created_on'], data['active'])
 
         return json.dumps(user.__dict__)
+
+def login_user(obj):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        SELECT email, id
+        FROM Users
+        WHERE email = ?
+        """, (obj['username'], ))
+
+        login = db_cursor.fetchone() 
+
+        if login:
+            return json.dumps({"valid":True, "id": login["id"] })
+
+        else:
+            return json.dumps({"valid":False})
