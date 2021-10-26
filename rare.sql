@@ -110,4 +110,7 @@ SELECT *
 FROM Users;
 
 SELECT *
-FROM Posts
+FROM Posts;
+
+SELECT *
+FROM Comments
