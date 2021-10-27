@@ -106,7 +106,9 @@ INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hot
 INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.", 10/24/2021);
 INSERT INTO Comments Values (null, 1, 1, "Thanks for calling the petey pablo hotline.", 10242021);
 
-
+INSERT INTO Categories ('label') VALUES ('Sports')
+INSERT INTO Categories ('label') VALUES ('Science')
+INSERT INTO Categories ('label') VALUES ('Tech')
 
 ALTER TABLE Comments 
 ADD COLUMN created_on DATE;
