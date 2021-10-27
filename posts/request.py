@@ -19,7 +19,7 @@ def get_all_posts():
             p.category_id,
             c.label,
             p.title,
-            p.publication_date,
+            p.publication_date date,
             p.image_url,
             p.content,
             p.approved
@@ -28,6 +28,7 @@ def get_all_posts():
             ON p.user_id = u.id
         JOIN categories c
             ON p.category_id = c.id
+        
         """)
 
         posts = []
@@ -36,7 +37,7 @@ def get_all_posts():
         for row in dataset:
 
             post = Post(row['id'], row['user_id'],
-                        row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
+                        row['category_id'], row['title'], row['date'], row['image_url'], row['content'], row['approved'])
 
             user = User(row['user_id'], row['first_name'], row['last_name'])
 
