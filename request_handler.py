@@ -201,6 +201,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_post(id)
         elif resource == "categories":
             delete_category(id)
+        elif resource == "tags":
+            delete_tag(id)
 
         # Encode the new animal and send in response
         self.wfile.write("".encode())
