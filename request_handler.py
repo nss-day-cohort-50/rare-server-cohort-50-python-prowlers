@@ -1,10 +1,11 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from categories.request import delete_category
 from users import get_single_user, get_all_users, create_user, delete_user, login_user
 from posts import get_single_post, get_all_posts, delete_post, create_post
 from comments import get_all_comments, get_single_comment
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag
-from categories import get_all_categories, create_category, get_single_category
+from categories import get_all_categories, create_category, get_single_category, delete_category
 
 
 
@@ -197,6 +198,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource == "posts":
             delete_post(id)
+        elif resource == "categories":
+            delete_category(id)
 
         # Encode the new animal and send in response
         self.wfile.write("".encode())
