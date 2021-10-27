@@ -19,7 +19,7 @@ def get_all_posts():
             p.category_id,
             c.label,
             p.title,
-            p.publication_date date,
+            p.publication_date,
             p.image_url,
             p.content,
             p.approved
@@ -28,7 +28,7 @@ def get_all_posts():
             ON p.user_id = u.id
         JOIN categories c
             ON p.category_id = c.id
-        
+        ORDER BY p.publication_date DESC
         """)
 
         posts = []
@@ -37,7 +37,7 @@ def get_all_posts():
         for row in dataset:
 
             post = Post(row['id'], row['user_id'],
-                        row['category_id'], row['title'], row['date'], row['image_url'], row['content'], row['approved'])
+                        row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
 
             user = User(row['user_id'], row['first_name'], row['last_name'])
 
@@ -66,7 +66,7 @@ def get_current_user_posts(current_user):
             u.last_name,
             p.category_id,
             p.title,
-            p.publication_date date,
+            p.publication_date,
             p.image_url,
             p.content,
             p.approved
@@ -74,7 +74,7 @@ def get_current_user_posts(current_user):
         JOIN users u
             ON p.user_id = u.id
         WHERE p.user_id = ?
-        ORDER BY p.date DESC
+        ORDER BY p.publication_date DESC
         """, (current_user, ))
 
         posts = []
@@ -83,7 +83,7 @@ def get_current_user_posts(current_user):
         for row in dataset:
 
             post = Post(row['id'], row['user_id'],
-                        row['category_id'], row['title'], row['date'], row['image_url'], row['content'], row['approved'])
+                        row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
 
             user = User(row['user_id'], row['first_name'], row['last_name'])
 
