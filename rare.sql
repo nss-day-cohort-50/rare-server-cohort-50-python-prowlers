@@ -86,18 +86,18 @@ CREATE TABLE "Categories" (
 
 INSERT INTO Categories ('label') VALUES ('News')
 INSERT INTO Tags ('label') VALUES ('JavaScript')
-INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy')INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Title', 1, 'image', 'content', null);
+INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy')
 INSERT INTO Users VALUES (1, "Ricky", "Spanish", 'ricky@spanish.com', "Here's my bio", "ricky", "password", "null", "20211025", 0);
 INSERT INTO Users VALUES (2, "Isla", "Fischer", 'Isla@fischer.com', "Here's my bio", "isla", "isla", "null", "20211025", 0);
 
 SELECT *
-FROM Comments
+FROM Categories
 
 INSERT INTO Posts VALUES (null, 1, 1, "alien 2", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
 
 INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.");
 INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.", 10/24/2021);
-INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.", 10242021);
+INSERT INTO Comments Values (null, 1, 1, "Thanks for calling the petey pablo hotline.", 10242021);
 
 
 
