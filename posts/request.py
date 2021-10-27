@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Post
+from models import Post, User
 
 
 def get_all_posts():
@@ -47,6 +47,8 @@ def get_current_user_posts(current_user):
         SELECT
             p.id,
             p.user_id,
+            u.first_name,
+            u.last_name,
             p.category_id,
             p.title,
             p.publication_date,
@@ -54,6 +56,8 @@ def get_current_user_posts(current_user):
             p.content,
             p.approved
         FROM posts p
+        JOIN users u
+            ON p.user_id = u.id
         WHERE p.user_id = ?
         """, (current_user, ))
 
@@ -65,6 +69,11 @@ def get_current_user_posts(current_user):
             post = Post(row['id'], row['user_id'],
                         row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
 
+            user = User(row['id'], row['first_name'], row['last_name'],
+                        row['email'], row['bio'], row['username'], row['password'],
+                        row['profile_image_url'], row['created_on'], row['active'])
+
+            post.user = user.__dict__
             posts.append(post.__dict__)
 
         return json.dumps(posts)
@@ -121,14 +130,15 @@ def create_post(new_post):
         VALUES
             ( ?, ?, ?, ?, ?, ?, ?, ? );
         """, (new_post['user_id'], new_post['category_id'], new_post['title'],
-                new_post['publication_date'], new_post['image_url'], new_post['content'],
-                new_post['approved']))
+              new_post['publication_date'], new_post['image_url'], new_post['content'],
+              new_post['approved']))
 
         id = db_cursor.lastrowid
 
         new_post['id'] = id
 
     return json.dumps(new_post)
+
 
 def update_post(id, new_post):
     """updates individual post"""
@@ -147,8 +157,8 @@ def update_post(id, new_post):
                 approved = ?
         WHERE id = ?
         """, (new_post['user_id'], new_post['category_id'], new_post['title'],
-                new_post['publication_date'], new_post['image_url'], new_post['content'],
-                new_post['approved'], id, ))
+              new_post['publication_date'], new_post['image_url'], new_post['content'],
+              new_post['approved'], id, ))
 
         rows_affected = db_cursor.rowcount
 
