@@ -1,9 +1,10 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from categories import get_all_categories, create_category, get_single_category
 from users import get_single_user, get_all_users, create_user, delete_user, login_user
 from posts import get_single_post, get_all_posts, delete_post, create_post
 from comments import get_all_comments, get_single_comment
+from tags import get_all_tags, get_single_tag, create_tag, delete_tag
+from categories import get_all_categories, create_category, get_single_category
 
 
 
@@ -100,6 +101,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_comment(id)}"
                 else:
                     response = f"{get_all_comments()}"
+            elif resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
             elif resource == "categories":
                 if id is not None:
                     response = f"{get_single_category(id)}"
@@ -144,6 +150,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_item = login_user(post_body)
         elif resource == "posts":
             new_item = create_post(post_body)
+        elif resource == "tags":
+            new_item = create_tag(post_body)
         elif resource == "categories":
             new_item = create_category(post_body)
 
