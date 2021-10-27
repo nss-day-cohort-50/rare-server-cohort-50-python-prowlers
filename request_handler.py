@@ -1,9 +1,12 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from users import get_single_user, get_all_users, create_user, delete_user, login_user
-from posts import get_single_post, get_all_posts, delete_post, create_post, update_post
-from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
-from tags import get_all_tags, get_single_tag
+from categories.request import get_all_categories
+from tags.request import delete_tag
+from users import get_single_user, get_all_users, create_user, delete_user
+from posts import get_single_post, get_all_posts, delete_post, create_post
+from comments import get_all_comments, get_single_comment
+from users import get_all_users, create_user, login_user
+from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 
 
 # Here's a class. It inherits from another class.
@@ -104,6 +107,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_tag(id)}"
                 else:
                     response = f"{get_all_tags()}"
+            elif resource == "categories":
+                if id is not None:
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
+            
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed
@@ -140,12 +149,11 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_item = create_user(post_body)
         elif resource == "login":
             new_item = login_user(post_body)
+
         elif resource == "posts":
             new_item = create_post(post_body)
-        elif resource == "comments":
-            new_item = create_comment(post_body)
-        elif resource == "users":
-            new_item = create_user(post_body)
+        elif resource == "tags":
+            new_item = create_tag(post_body)
 
         self.wfile.write(f"{new_item}".encode())
         # Encode the new animal and send in response
@@ -165,11 +173,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         # EXAMPLE BELOW
         # if resource == "animals":
         #     success = update_animal(id, post_body)
-        if resource == "posts":
-            success = update_post(id, post_body)
-
-        elif resource == "comments":
-            success = update_comment(id, post_body)
 
         # Encode the new animal and send in response
         if success:
@@ -194,8 +197,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource == "posts":
             delete_post(id)
-        elif resource == "comments":
-            delete_comment(id)
 
         # Encode the new animal and send in response
         self.wfile.write("".encode())
