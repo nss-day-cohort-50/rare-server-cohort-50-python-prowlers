@@ -1,10 +1,12 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from categories.request import get_all_categories
+from tags.request import delete_tag
 from users import get_single_user, get_all_users, create_user, delete_user
 from posts import get_single_post, get_all_posts, delete_post, create_post
 from comments import get_all_comments, get_single_comment
 from users import get_all_users, create_user, login_user
+from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 
 
 # Here's a class. It inherits from another class.
@@ -100,6 +102,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_comment(id)}"
                 else:
                     response = f"{get_all_comments()}"
+            elif resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
             elif resource == "categories":
                 if id is not None:
                     response = f"{get_single_category(id)}"
@@ -145,6 +152,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource == "posts":
             new_item = create_post(post_body)
+        elif resource == "tags":
+            new_item = create_tag(post_body)
 
         self.wfile.write(f"{new_item}".encode())
         # Encode the new animal and send in response
