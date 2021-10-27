@@ -113,4 +113,19 @@ SELECT *
 FROM Posts;
 
 SELECT *
-FROM Comments
+FROM Comments;
+
+SELECT
+            p.id,
+            p.user_id,
+            u.first_name,
+            u.last_name,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved
+        FROM posts p
+        JOIN users u
+            ON p.user_id = u.id

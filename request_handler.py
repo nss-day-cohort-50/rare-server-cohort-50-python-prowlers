@@ -99,11 +99,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_comment(id)}"
                 else:
                     response = f"{get_all_comments()}"
-            elif resource == "categories":
-                if id is not None:
-                    response = f"{get_single_category(id)}"
-                else:
-                    response = f"{get_all_categories()}"
+            # elif resource == "categories":
+            #     if id is not None:
+            #         response = f"{get_single_category(id)}"
+            #     else:
+            #         response = f"{get_all_categories()}"
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed

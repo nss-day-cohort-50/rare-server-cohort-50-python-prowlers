@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Post, User
+from models import Post, User, Category
 
 
 def get_all_posts():
@@ -14,13 +14,20 @@ def get_all_posts():
         SELECT
             p.id,
             p.user_id,
+            u.first_name,
+            u.last_name,
             p.category_id,
+            c.label,
             p.title,
             p.publication_date,
             p.image_url,
             p.content,
             p.approved
         FROM posts p
+        JOIN users u
+            ON p.user_id = u.id
+        JOIN categories c
+            ON p.category_id = c.id
         """)
 
         posts = []
@@ -31,6 +38,13 @@ def get_all_posts():
             post = Post(row['id'], row['user_id'],
                         row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
 
+            user = User(row['user_id'], row['first_name'], row['last_name'])
+
+            category = Category(
+                row['category_id'], row['label'])
+
+            post.category = category.__dict__
+            post.user = user.__dict__
             posts.append(post.__dict__)
 
         return json.dumps(posts)
@@ -45,13 +59,13 @@ def get_current_user_posts(current_user):
 
         db_cursor.execute("""
         SELECT
-            p.id,
+            p.id,    
             p.user_id,
             u.first_name,
             u.last_name,
             p.category_id,
             p.title,
-            p.publication_date,
+            p.publication_date date,
             p.image_url,
             p.content,
             p.approved
@@ -59,6 +73,7 @@ def get_current_user_posts(current_user):
         JOIN users u
             ON p.user_id = u.id
         WHERE p.user_id = ?
+        ORDER BY p.date DESC
         """, (current_user, ))
 
         posts = []
@@ -67,11 +82,9 @@ def get_current_user_posts(current_user):
         for row in dataset:
 
             post = Post(row['id'], row['user_id'],
-                        row['category_id'], row['title'], row['publication_date'], row['image_url'], row['content'], row['approved'])
+                        row['category_id'], row['title'], row['date'], row['image_url'], row['content'], row['approved'])
 
-            user = User(row['id'], row['first_name'], row['last_name'],
-                        row['email'], row['bio'], row['username'], row['password'],
-                        row['profile_image_url'], row['created_on'], row['active'])
+            user = User(row['user_id'], row['first_name'], row['last_name'])
 
             post.user = user.__dict__
             posts.append(post.__dict__)
