@@ -27,14 +27,13 @@ def get_all_comments():
             ON p.id = c.post_id
         """)
 
-
         comments = []
         dataset = db_cursor.fetchall()
 
         for row in dataset:
 
             comment = Comment(row['id'], row['post_id'],
-                        row['author_id'], row['content'], row['created_on'])
+                              row['author_id'], row['content'], row['created_on'])
 
             post = Post(row['id'], row['user_id'],
                         row['category_id'], row['title'],
@@ -49,6 +48,7 @@ def get_all_comments():
             comments.append(comment.__dict__)
 
         return json.dumps(comments)
+
 
 def get_single_comment(id):
     """fetches individual comment"""
@@ -65,12 +65,12 @@ def get_single_comment(id):
             c.created_on
         FROM Comments c
         WHERE c.id = ?
-        """, ( id, ))
+        """, (id, ))
 
         data = db_cursor.fetchone()
 
         comment = Comment(data['id'], data['post_id'],
-                        data['author_id'], data['content'], data['created_on'])
+                          data['author_id'], data['content'], data['created_on'])
 
         return json.dumps(comment.__dict__)
 
@@ -86,13 +86,14 @@ def create_comment(new_comment):
         VALUES
             ( ?, ?, ?, ?);
         """, (new_comment['post_id'], new_comment['author_id'],
-            new_comment['content'], new_comment['created_on']))
+              new_comment['content'], new_comment['created_on']))
 
         id = db_cursor.lastrowid
 
         new_comment['id'] = id
 
     return json.dumps(new_comment)
+
 
 def delete_comment(id):
     """deletes individual comment"""
@@ -103,6 +104,7 @@ def delete_comment(id):
         DELETE FROM Comments
         WHERE id = ?
         """, (id, ))
+
 
 def update_comment(id, new_post):
     """updates individual comment"""
@@ -118,7 +120,7 @@ def update_comment(id, new_post):
                 created_on = ?
         WHERE id = ?
         """, (new_post['post_id'], new_post['author_id'],
-            new_post['content'], new_post['created_on'], id, ))
+              new_post['content'], new_post['created_on'], id, ))
 
         rows_affected = db_cursor.rowcount
 
@@ -126,4 +128,3 @@ def update_comment(id, new_post):
         return False
     else:
         return True
-        

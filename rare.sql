@@ -46,6 +46,7 @@ CREATE TABLE "Comments" (
   "post_id" INTEGER,
   "author_id" INTEGER,
   "content" varchar,
+  "created_on" date,
   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
 );
@@ -84,23 +85,18 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
-<<<<<<< HEAD
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Title', 1, 'image', 'content', null);
-=======
-INSERT INTO Categories ('label') VALUES ('News')
-INSERT INTO Tags ('label') VALUES ('JavaScript')
-INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy')
->>>>>>> main
 INSERT INTO Users VALUES (1, "Ricky", "Spanish", 'ricky@spanish.com', "Here's my bio", "ricky", "password", "null", "20211025", 0);
 INSERT INTO Users VALUES (2, "Isla", "Fischer", 'Isla@fischer.com', "Here's my bio", "isla", "isla", "null", "20211025", 0);
 
 SELECT *
 FROM Categories
 
-INSERT INTO Posts VALUES (null, 1, 1, "alien 2", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
+INSERT INTO Posts VALUES (null, 2, 1, "alien 21", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
+INSERT INTO Posts VALUES (null, 2, 2, "alien 2", "10/25/2021", null, "IT WAS ALIENS!!!!!", true);
 
 INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.");
 INSERT INTO Comments Values (null, 1, 3, "Thanks for calling the petey pablo hotline.", 10/24/2021);
@@ -112,3 +108,27 @@ INSERT INTO Categories ('label') VALUES ('Tech')
 
 ALTER TABLE Comments 
 ADD COLUMN created_on DATE;
+
+SELECT *
+FROM Users;
+
+SELECT *
+FROM Posts;
+
+SELECT *
+FROM Comments;
+
+SELECT
+            p.id,
+            p.user_id,
+            u.first_name,
+            u.last_name,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved
+        FROM posts p
+        JOIN users u
+            ON p.user_id = u.id

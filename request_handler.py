@@ -1,11 +1,12 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from categories.request import delete_category
 from users import get_single_user, get_all_users, create_user, delete_user, login_user
-from posts import get_single_post, get_all_posts, delete_post, create_post
-from comments import get_all_comments, get_single_comment
+from posts import get_single_post, get_all_posts, delete_post, create_post, update_post, get_current_user_posts
+from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
+from categories.request import get_all_categories
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 from categories import get_all_categories, create_category, get_single_category, delete_category
+
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -69,9 +70,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     # Here's a method on the class that overrides the parent's method.
@@ -110,10 +111,12 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
-            
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed
+
+            if key == 'user_id' and resource == 'posts':
+                response = get_current_user_posts(value)
 
             # Is the resource `customers` and was there a
             # query parameter that specified the customer
