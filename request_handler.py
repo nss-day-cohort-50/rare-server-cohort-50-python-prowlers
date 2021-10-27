@@ -7,8 +7,6 @@ from comments import get_all_comments, get_single_comment
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 from categories import get_all_categories, create_category, get_single_category, delete_category
 
-
-
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
 # work together for a common purpose. In this case, that
@@ -200,6 +198,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_post(id)
         elif resource == "categories":
             delete_category(id)
+        elif resource == "tags":
+            delete_tag(id)
 
         # Encode the new animal and send in response
         self.wfile.write("".encode())
