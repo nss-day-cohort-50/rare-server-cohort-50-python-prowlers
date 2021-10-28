@@ -4,7 +4,7 @@ from users import get_single_user, get_all_users, create_user, delete_user, logi
 from posts import get_single_post, get_all_posts, delete_post, create_post, update_post, get_current_user_posts
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from categories.request import get_all_categories
-from tags import get_all_tags, get_single_tag, create_tag, delete_tag
+from tags import get_all_tags, get_single_tag, create_tag, update_tag, delete_tag
 from categories import get_all_categories, create_category, get_single_category, delete_category
 
 
@@ -70,7 +70,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, PATCH, DELETE')
         self.send_header('Access-Control-Allow-Headers',
                          'X-Requested-With, Content-Type, Accept')
         self.end_headers()
@@ -175,6 +175,29 @@ class HandleRequests(BaseHTTPRequestHandler):
         # EXAMPLE BELOW
         # if resource == "animals":
         #     success = update_animal(id, post_body)
+
+        # Encode the new animal and send in response
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+        self.wfile.write("".encode())
+
+    def do_PATCH(self):
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+        success = False
+        # Delete a single animal from the list
+        # EXAMPLE BELOW
+        # if resource == "animals":
+        #     success = update_animal(id, post_body)
+
+        if resource == "tags":
+            success = update_tag(id, post_body)
 
         # Encode the new animal and send in response
         if success:
