@@ -3,10 +3,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from users import get_single_user, get_all_users, create_user, delete_user, login_user
 from posts import get_single_post, get_all_posts, delete_post, create_post, update_post, get_current_user_posts
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
-from categories.request import get_all_categories
 from tags import get_all_tags, get_single_tag, create_tag, update_tag, delete_tag
-from categories import get_all_categories, create_category, get_single_category, delete_category
-
+from categories import get_all_categories, create_category, get_single_category, delete_category, update_category
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -198,6 +196,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "tags":
             success = update_tag(id, post_body)
+        if resource == "categories":
+            success = update_category(id, post_body)
 
         # Encode the new animal and send in response
         if success:
