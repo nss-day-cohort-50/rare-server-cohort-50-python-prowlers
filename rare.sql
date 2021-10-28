@@ -87,7 +87,9 @@ CREATE TABLE "Categories" (
 
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
+INSERT INTO PostTags ('post_id', 'tag_id') VALUES (1, 1) ;
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+INSERT INTO Reactions ('label', 'image_url') VALUES ('angry', 'https://pngtree.com/so/angry');
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Title', 1, 'image', 'content', null);
 INSERT INTO Users VALUES (1, "Ricky", "Spanish", 'ricky@spanish.com', "Here's my bio", "ricky", "password", "null", "20211025", 0);
 INSERT INTO Users VALUES (2, "Isla", "Fischer", 'Isla@fischer.com', "Here's my bio", "isla", "isla", "null", "20211025", 0);
@@ -118,17 +120,8 @@ FROM Posts;
 SELECT *
 FROM Comments;
 
-SELECT
-            p.id,
-            p.user_id,
-            u.first_name,
-            u.last_name,
-            p.category_id,
-            p.title,
-            p.publication_date,
-            p.image_url,
-            p.content,
-            p.approved
-        FROM posts p
-        JOIN users u
-            ON p.user_id = u.id
+SELECT *
+FROM Tags;
+SELECT *
+FROM PostTags;
+
