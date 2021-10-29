@@ -201,6 +201,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_tag(id, post_body)
         if resource == "categories":
             success = update_category(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
 
         # Encode the new animal and send in response
         if success:
