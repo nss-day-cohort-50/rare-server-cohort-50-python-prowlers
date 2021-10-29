@@ -60,11 +60,12 @@ def get_current_user_posts(current_user):
 
         db_cursor.execute("""
         SELECT
-            p.id,    
+            p.id,
             p.user_id,
             u.first_name,
             u.last_name,
             p.category_id,
+            c.label,
             p.title,
             p.publication_date,
             p.image_url,
@@ -73,7 +74,9 @@ def get_current_user_posts(current_user):
         FROM posts p
         JOIN users u
             ON p.user_id = u.id
-        WHERE p.user_id = ?
+        JOIN categories c
+            ON p.category_id = c.id
+        WHERE p.user_id = ? 
         ORDER BY p.publication_date DESC
         """, (current_user, ))
 
@@ -87,6 +90,10 @@ def get_current_user_posts(current_user):
 
             user = User(row['user_id'], row['first_name'], row['last_name'])
 
+            category = Category(
+                row['category_id'], row['label'])
+
+            post.category = category.__dict__
             post.user = user.__dict__
             posts.append(post.__dict__)
 
@@ -103,13 +110,20 @@ def get_single_post(id):
         SELECT
             p.id,
             p.user_id,
+            u.first_name,
+            u.last_name,
             p.category_id,
+            c.label,
             p.title,
             p.publication_date,
             p.image_url,
             p.content,
             p.approved
         FROM posts p
+        JOIN users u
+            ON p.user_id = u.id
+        JOIN categories c
+            ON p.category_id = c.id
         WHERE p.id = ?
         """, (id, ))
 
@@ -119,6 +133,13 @@ def get_single_post(id):
                     data['category_id'], data['title'],
                     data['publication_date'], data['image_url'], data['content'], data['approved'])
 
+        user = User(data['user_id'], data['first_name'], data['last_name'])
+
+        category = Category(
+            data['category_id'], data['label'])
+
+        post.category = category.__dict__
+        post.user = user.__dict__
         return json.dumps(post.__dict__)
 
 

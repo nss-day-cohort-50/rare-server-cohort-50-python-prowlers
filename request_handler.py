@@ -5,6 +5,7 @@ from posts import get_single_post, get_all_posts, delete_post, create_post, upda
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from tags import get_all_tags, get_single_tag, create_tag, update_tag, delete_tag
 from categories import get_all_categories, create_category, get_single_category, delete_category, update_category
+from post_tags import get_post_tags
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -109,6 +110,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
+            elif resource == "postTags":
+                response = f"{get_post_tags(id)}"
 
         elif len(parsed) == 3:
             (resource, key, value) = parsed
@@ -198,6 +201,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_tag(id, post_body)
         if resource == "categories":
             success = update_category(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
 
         # Encode the new animal and send in response
         if success:
